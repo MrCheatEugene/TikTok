@@ -1,0 +1,154 @@
+
+
+<html style="background-color:black; color: white;">
+<meta charset="UTF-8">
+
+<style type="text/css">
+	html{
+
+	font: 125% Segoe UI;
+	}
+svg{
+	border-style: solid;
+	border-color: red;
+	border-radius: 8px;
+
+}
+
+</style>
+
+<div align="top">
+</br>
+Прибавить/вычесть к/из X(1,5,10,15..)
+<div>
+<input list="vals" type="text" value="1" id="mx">
+<datalist id="vals">
+<option>1</option>
+<option>5</option>
+<option>10</option>
+<option>15</option>
+<option>20</option>
+<option>25</option>
+<option>50</option>
+</datalist>
+</div>
+Прибавить/вычесть к/из Y(1,5,10,15..)
+</br>
+<input type="text" id="my"value="1" list="vals" >
+</br>
+Размер шрифта(1,5,10,15..)
+</br>
+<input  onkeypress="sizee();" type="text" id="msize"value="72" list="vals" >
+<br></br>
+<p>Задний фон <input type="color" id="colorpicker" onchange="bgchange();"></p>
+<p>Цвет текста <input type="color" id="tcolorpicker" onchange="tchange();"> </p>
+</div></div>
+<div> Строка 1 <input type="text" id="line_one" value="строка" onchange="ch_text()"/> <br>Строка 2 <input type="text"  value="строка"id="line_two" onchange="ch_text()"/> <br>Строка 3 <input type="text"  value="строка" id="line_three" onchange="ch_text()"/></div>
+<button onclick="xp();">+X</button><button onclick="xm();">-X</button><button onclick="yp();">+Y</button><button onclick="ym();">-Y</button>
+<button onclick="reset();">0,0 (сброс)</button>
+<p>Координаты:</p>
+<p id="coords">
+</p>
+<p>Предпросмотр:</p>
+<svg style="background-color:white; " id="svg" height="1280" width="720">
+<circle id="dot" r="5"></circle>
+<text id="lineone" x="0" y="72" style="font-family: Segoe UI Light; font-size: 72; fill: black">hello,world!</text>
+<text id="linetwo" x="0" y="154" style="font-family: Segoe UI Light; font-size: 72; fill: black">привет, мир!</text>
+<text id="linethree" x="0" y="246" style="font-family: Segoe UI Light; font-size: 72; fill: black">Третья строка</text>
+</svg>
+<script>
+let x,y,s;
+x=0;
+y=0;	
+s=72;
+
+let dot=document.getElementById("dot");
+let l1=document.getElementById("lineone");
+let l2=document.getElementById("linetwo");
+let l3=document.getElementById("linethree");
+
+let coords=document.getElementById("coords");
+let svgg=document.getElementById("svg");
+
+let mx,my;
+mx=0;my=0
+coords.innerHTML="x: "+x+"; y: "+y+"; ";
+function bgchange(){
+svgg.style="background-color:"+document.getElementById('colorpicker').value+";"
+}
+function ch_text(){
+l1.innerHTML=document.getElementById('line_one').value;
+l2.innerHTML=document.getElementById('line_two').value;
+l3.innerHTML=document.getElementById('line_three').value;
+}
+function conf_export(){
+alert("Ваша конфигурация:  "+"text_color:"+document.getElementById('tcolorpicker').value+";background_color:"+document.getElementById('colorpicker').value+";"+"line_one:"+document.getElementById('line_one').value+";"+"line_two:"+document.getElementById('line_two').value+";"+"line_three:"+document.getElementById('line_three').value+";");
+}
+function tchange(){
+	s=	parseInt( document.getElementById("msize").value);
+l1.style="font-family: Segoe UI Light; font-size: "+s+"; fill: "+document.getElementById('tcolorpicker').value;
+l2.style="font-family: Segoe UI Light; font-size: "+s+"; fill: "+document.getElementById('tcolorpicker').value;
+l3.style="font-family: Segoe UI Light; font-size: "+s+"; fill: "+document.getElementById('tcolorpicker').value;
+
+
+}
+
+function sizee(){
+	s=	parseInt( document.getElementById("msize").value);
+l1.style="font-family: Segoe UI Light; font-size: "+s+"; fill: "+document.getElementById('tcolorpicker').value;
+l2.style="font-family: Segoe UI Light; font-size: "+s+"; fill: "+document.getElementById('tcolorpicker').value;
+l3.style="font-family: Segoe UI Light; font-size: "+s+"; fill: "+document.getElementById('tcolorpicker').value;
+
+}
+
+function reset(){
+	x=0;	
+y=0;
+dot.setAttribute('cx',x);
+dot.setAttribute('cy',y);
+l1.setAttribute('y',s);	
+l1.setAttribute('x',0);	
+
+l2.setAttribute('y',s*2);	
+l2.setAttribute('x',0);	
+l3.setAttribute('y',s*3);	
+l3.setAttribute('x',0);	
+coords.innerHTML="x: "+x+"; y: "+y+"; ";
+}
+function xp(){
+	mx=parseInt( document.getElementById("mx").value);
+x=x+mx;
+dot.setAttribute('cx',x);
+l1.setAttribute('x',x);	
+l2.setAttribute('x',x);		
+l3.setAttribute('x',x);
+coords.innerHTML="x: "+x+"; y: "+y+"; ";
+}
+
+function xm(){
+	mx=parseInt( document.getElementById("mx").value);
+x=x-mx;
+dot.setAttribute('cx',x);
+l1.setAttribute('x',x);		
+l2.setAttribute('x',x);	
+l3.setAttribute('x',x);	
+coords.innerHTML="x: "+x+"; y: "+y+"; ";
+}
+function yp(){
+	my=parseInt( document.getElementById("my").value); y=y+my; dot.setAttribute('cy',y);  l1.setAttribute('y',s+y);
+l2.setAttribute('y',(s*2)+y);l3.setAttribute('y',(s*3)+y);
+
+coords.innerHTML="x: "+x+"; y: "+y+"; ";
+
+}
+function ym(){
+	my=parseInt( document.getElementById("my").value);
+y=y-my;
+dot.setAttribute('cy',y);
+l1.setAttribute('y',s+y);	
+l2.setAttribute('y',(s*2)+y);	
+l3.setAttribute('y',(s*3)+y);
+
+coords.innerHTML="x: "+x+"; y: "+y+"; ";
+}
+</script>
