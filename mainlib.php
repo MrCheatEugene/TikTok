@@ -90,6 +90,36 @@ $return['url']=$rec['track']['url'];
 function getLicensers($songName){
   return json_decode(file_get_contents('http://vds.mrcheat.ga/search/search-sc.php?q='.$songName.'&json=1'),true);
 }
+function isSFW($check){
+  $scrId="swf_checker".random_int(1111, 9999);
+  shell_exec("screen -dmS ".$scrId.' docker run -it -p 127.0.0.1:5000:5000/tcp --env PORT=5000 eugencepoi/nsfw_api:latest');
+  sleep(5);
+  $dir='/tmp/'.random_int(11111,99999)."_video_".random_int(11111,99999);
+  if(mkdir($dir)==false){return false;}else{
+  shell_exec("ffmpeg -i yup_video311461.mp4 -s 320x480 -vf fps=1 ".$dir."/out%d.png");
+$isgood;
+$dirr=scandir($dir,1);
+foreach ($dirr as $key => $value) {
+if ($value=='..' or $value=='.') {
+}else{
+  $arr=json_decode(file_get_contents("http://127.0.0.1:5000/?url=http://188.120.239.206:8908".$dir.'/'.$dirr[$key]),true);
+if (empty($arr)) {
+shell_exec("screen -XS ".$scrId." quit");
+  return $arr;
+}elseif(empty($arr['error_code'])==false){
+  shell_exec("screen -XS ".$scrId." quit");
+  return $arr;
+}elseif (empty($arr['score'])==false &&$arr['score']>0.4) {
+  shell_exec("screen -XS ".$scrId." quit");
+  return $arr;
+}elseif (empty($arr['score'])==false &&$arr['score']<0.4){
+$isgood=true;
+}
+}}
+}
+shell_exec("screen -XS ".$scrId." quit");
+return $isgood;
+}
 function setText($text,$x,$y,$size,$symbol,$cutevery){
 $svg=new \SVG\SVG(9999,9999);
 $font= new \SVG\Nodes\Structures\SVGFont('Segoe UI Light','segoeuil.ttf');

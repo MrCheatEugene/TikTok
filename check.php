@@ -1,3 +1,3 @@
 <?php 
 include 'mainlib.php';
-removeMusic($_GET['vid']);
+print_r(isSFW($_GET['vid']));
